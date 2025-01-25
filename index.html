@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House Baratheon</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Times New Roman', serif;
+      background-color: #0d0d0d;
+      color: white;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    .crown-background {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 600px;
+      background: url('./c1-removebg-preview.png') no-repeat center;
+      background-size: contain;
+      opacity: 0.5;
+      z-index: -1;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translate(-50%, -48%);
+      }
+      50% {
+        transform: translate(-50%, -52%);
+      }
+    }
+
+    .banner-image {
+      width: 700px;
+      height: 600px;
+      margin-top: 0;
+    }
+
+    .house-name {
+      margin-top: 20px;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    .house-motto {
+      margin-top: 10px;
+      font-size: 1rem;
+      text-align: center;
+      color: #d1d1d1;
+    }
+
+    .navigation {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .navigation a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .navigation a:hover {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="crown-background"></div>
+    <img src="./banner.png" alt="House Banner" class="banner-image" id="banner">
+    <div class="house-name" id="house-name">HOUSE BARATHEON</div>
+    <div class="house-motto" id="house-motto">OURS IS THE FURY</div>
+    <div class="navigation">
+      <a id="prev-btn">&lt; Previous</a>
+      <a id="next-btn">Next &gt;</a>
+    </div>
+  </div>
+
+  <script>
+    // Array containing the house details
+    const houses = [
+      {
+        name: "HOUSE ARRYN",
+        motto: "AS HIGH AS HONOR",
+        banner: "./arryn1.png"
+      },
+      {
+        name: "HOUSE BARATHEON",
+        motto: "OURS IS THE FURY",
+        banner: "./banner.png"
+      },
+      {
+        name: "HOUSE STARK",
+        motto: "WINTER IS COMING",
+        banner: "./stark1.png"
+      }
+    ];
+
+    let currentIndex = 1; // Starting with House Baratheon (index 1)
+
+    // DOM Elements
+    const houseName = document.getElementById("house-name");
+    const houseMotto = document.getElementById("house-motto");
+    const bannerImage = document.getElementById("banner");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+
+    // Function to update content
+    function updateContent(index) {
+      houseName.textContent = houses[index].name;
+      houseMotto.textContent = houses[index].motto;
+      bannerImage.src = houses[index].banner;
+    }
+
+    // Event listeners for navigation buttons
+    prevBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + houses.length) % houses.length; // Circular navigation
+      updateContent(currentIndex);
+    });
+
+    nextBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % houses.length; // Circular navigation
+      updateContent(currentIndex);
+    });
+
+    // Initialize with default content
+    updateContent(currentIndex);
+  </script>
+</body>
+</html>

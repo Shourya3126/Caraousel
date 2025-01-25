@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House Baratheon</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Times New Roman', serif;
+      background-color: #0d0d0d;
+      color: white;
+      overflow: hidden;
+      transition: background-image 0.5s ease; /* Smooth transition for background change */
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    .crown-background {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 600px;
+      background: url('./c1-removebg-preview.png') no-repeat center;
+      background-size: contain;
+      opacity: 0.5;
+      z-index: -1;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translate(-50%, -48%);
+      }
+      50% {
+        transform: translate(-50%, -52%);
+      }
+    }
+
+    .banner-image {
+      width: 700px;
+      height: 600px;
+      margin-top: 0;
+    }
+
+    .house-name {
+      margin-top: 20px;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    .house-motto {
+      margin-top: 10px;
+      font-size: 1rem;
+      text-align: center;
+      color : #d1d1d1;
+    }
+
+    .info-button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #444;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 5px; /* Added border radius for rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
+      transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+    }
+
+    .info-button:hover {
+      background-color: #666;
+      transform: scale(1.05); /* Slightly enlarge on hover */
+    }
+
+    .info-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      display: none; /* Initially hidden */
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transition: opacity 0.5s ease;
+      z-index: 10;
+      opacity: 0; /* Start with opacity 0 */
+    }
+
+    .info-content {
+      max-width: 600px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .navigation {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .navigation a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .navigation a:hover {
+      color: white;
+    }
+
+    .logo {
+      position: absolute; /* Position it absolutely */
+      top: 10px; /* Adjust as needed */
+      left: 10px; /* Adjust as needed */
+      width: 250px; /* Set a width for the logo */
+      height: auto; /* Maintain aspect ratio */
+      z-index: 1; /* Ensure it appears above other elements */
+    }
+
+    /* CSS Classes for Background Images */
+    .bg-arran {
+      background-image: url('./bgart.png');
+      background-size: 70% auto; /* Make background image smaller */
+      background-position: center;
+    }
+
+    .bg-baratheon {
+      background-image: url('./baratheon-background.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .bg-stark {
+      background-image: url('./stark-backgroun.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="./corner.png" alt="House Baratheon Logo" class="logo" id="logo"> <!-- Logo -->
+    <div class="crown-background" id="crown-bg"></div>
+    <img src="./banner.png" alt="House Banner" class="banner-image" id="banner">
+    <div class="house-name" id="house-name">HOUSE BARATHEON</div>
+    <div class="house-motto" id="house-motto">OURS IS THE FURY</div>
+    <button class="info-button" id="info-btn">Info</button>
+    <div class="navigation">
+      <a id="prev-btn">&lt; Previous</a>
+      <a id="next-btn">Next &gt;</a>
+    </div>
+  </div>
+
+  <div class="info-overlay" id="info-overlay">
+    <div class="info-content" id="info-content"></div>
+    <button class="info-button" id="close-info-btn">Close</button>
+  </div>
+
+  <script>
+    const houses = [
+      {
+        name: "HOUSE ARRYN",
+        motto: "AS HIGH AS HONOR",
+        banner: "./arryn1.png",
+        background: "bg-arran", // Use class for background
+        info: "House Arryn is one of the Great Houses of Westeros, sworn to the defense of the Vale.",
+        hasCrownBg: false // House Arryn doesn't need the crown background
+      },
+      {
+        name: "HOUSE BARATHEON",
+        motto: "OURS IS THE FURY",
+        banner: "./banner.png",
+        background: "bg-baratheon", // Use class for background
+        info: `“Let them come. We are the storm that will drown them.” — Stannis Baratheon.`,
+        hasCrownBg: true // House Baratheon needs the crown background
+      },
+      {
+        name: "HOUSE STARK",
+        motto: "WINTER IS COMING",
+        banner: "./stark1.png",
+        background: "bg-stark", // Use class for background
+        info: "House Stark is the principal house of the North, known for their honor and loyalty.",
+        hasCrownBg: false // House Stark doesn't need the crown background
+      }
+    ];
+  
+    let currentIndex = 1; // Starting with House Baratheon (index 1)
+  
+    // DOM Elements
+    const houseName = document.getElementById("house-name");
+    const houseMotto = document.getElementById("house-motto");
+    const bannerImage = document.getElementById("banner");
+    const infoContent = document.getElementById("info-content");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const crownBg = document.getElementById("crown-bg");
+  
+    // Function to update content
+    function updateContent(index) {
+      houseName.textContent = houses[index].name;
+      houseMotto.textContent = houses[index].motto;
+      bannerImage.src = houses[index].banner;
+      infoContent.textContent = houses[index].info;
+
+      // Remove previous background class
+      document.body.classList.remove('bg-arran', 'bg-baratheon', 'bg-stark');
+
+      // Add new background class based on the house
+      document.body.classList.add(houses[index].background);
+
+      // Show/hide crown background based on the house
+      if (houses[index].hasCrownBg) {
+        crownBg.style.display = "block";
+      } else {
+        crownBg.style.display = "none";
+      }
+    }
+  
+    // Event listeners for navigation buttons
+    prevBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + houses.length) % houses.length; // Circular navigation
+      updateContent(currentIndex); // Update content including background
+    });
+  
+    nextBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % houses.length; // Circular navigation
+      updateContent(currentIndex); // Update content including background
+    });
+  
+    // Initialize with default content
+    updateContent(currentIndex);
+  </script>
+</body>
+</html>
